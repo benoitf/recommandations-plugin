@@ -38,6 +38,7 @@
     "@eclipse-che/plugin": "^0.0.1-1604326289",
     "axios": "^0.21.0",
     "globby": "^11.0.1",
-    "inversify": "^5.0.1"
+    "inversify": "^5.0.1",
+    "reflect-metadata": "^0.1.13"
   }
 }
