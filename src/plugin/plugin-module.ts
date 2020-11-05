@@ -8,10 +8,10 @@
  ***********************************************************************/
 import { ContainerModule, interfaces } from 'inversify';
 
-import { RecommandationPlugin } from './recommandation-plugin';
+import { RecommendationPlugin } from './recommendation-plugin';
 
 const pluginModule = new ContainerModule((bind: interfaces.Bind) => {
-  bind(RecommandationPlugin).toSelf().inSingletonScope();
+  bind(RecommendationPlugin).toSelf().inSingletonScope();
 });
 
 export { pluginModule };

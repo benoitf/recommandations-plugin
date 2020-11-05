@@ -14,7 +14,7 @@ import * as plugin from '../src/plugin';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Container } from 'inversify';
 import { InversifyBinding } from '../src/inject/inversify-bindings';
-import { RecommandationPlugin } from '../src/plugin/recommandation-plugin';
+import { RecommendationPlugin } from '../src/plugin/recommendation-plugin';
 
 describe('Test Plugin', () => {
   jest.mock('../src/inject/inversify-bindings');
@@ -33,17 +33,17 @@ describe('Test Plugin', () => {
 
   test('basics', async () => {
     const container = new Container();
-    const morecommandationPluginMock = { start: jest.fn(), stop: jest.fn() };
-    container.bind(RecommandationPlugin).toConstantValue(morecommandationPluginMock as any);
+    const morecommendationPluginMock = { start: jest.fn(), stop: jest.fn() };
+    container.bind(RecommendationPlugin).toConstantValue(morecommendationPluginMock as any);
     initBindings.mockReturnValue(container);
 
     // try stop before start, it should not call the plug-in
     plugin.stop();
-    expect(morecommandationPluginMock.stop).toBeCalledTimes(0);
+    expect(morecommendationPluginMock.stop).toBeCalledTimes(0);
 
     plugin.start();
     plugin.stop();
-    expect(morecommandationPluginMock.start).toBeCalled();
-    expect(morecommandationPluginMock.stop).toBeCalled();
+    expect(morecommendationPluginMock.start).toBeCalled();
+    expect(morecommendationPluginMock.stop).toBeCalled();
   });
 });

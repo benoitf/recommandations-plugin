@@ -15,7 +15,7 @@ import { FeaturedFetcher } from '../../src/fetch/featured-fetcher';
 import { FeaturedPluginLogic } from '../../src/logic/featured-plugin-logic';
 import { FindFileExtensions } from '../../src/find/find-file-extensions';
 import { InversifyBinding } from '../../src/inject/inversify-bindings';
-import { RecommandationPlugin } from '../../src/plugin/recommandation-plugin';
+import { RecommendationPlugin } from '../../src/plugin/recommendation-plugin';
 import { VSCodeCurrentPlugins } from '../../src/analyzer/vscode-current-plugins';
 import { WorkspaceHandler } from '../../src/workspace/workspace-handler';
 
@@ -47,8 +47,8 @@ describe('Test InversifyBinding', () => {
     expect(featuredPluginLogic).toBeDefined();
 
     // check plugin
-    const recommandationPlugin = container.get(RecommandationPlugin);
-    expect(recommandationPlugin).toBeDefined();
+    const recommendationPlugin = container.get(RecommendationPlugin);
+    expect(recommendationPlugin).toBeDefined();
 
     // check workspace
     const workspaceHandler = container.get(WorkspaceHandler);

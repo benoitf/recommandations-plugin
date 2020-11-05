@@ -1,5 +1,5 @@
 {
-  "name": "recommandations-plugin",
+  "name": "recommendation-plugin",
   "publisher": "Eclipse-Che",
   "keywords": [
     "theia-plugin"

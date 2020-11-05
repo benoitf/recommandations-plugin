@@ -1,2 +1,2 @@
-# recommandations-plugin
-recommandations-plugin Plugin example for Theia.
+# recommendations-plugin
+recommendations-plugin Plugin example for Theia.

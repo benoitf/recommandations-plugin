@@ -69,7 +69,7 @@ export function start(context: theia.PluginContext) {
                 if (!remoteAvailablePlugins) {
                     // need to fetch
                     try {
-                        const response = await AxiosInstance.get(`http://localhost:8080/v3/recommandations/featured/${languageID}.json`);
+                        const response = await AxiosInstance.get(`http://localhost:8080/v3/recommendations/featured/${languageID}.json`);
                         theia.window.showInformationMessage(`remote content updated to ${response.data}`);
                         remoteAvailablePlugins = response.data.ids;
                        catch (error) {

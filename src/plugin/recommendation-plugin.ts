@@ -15,12 +15,12 @@ import { DevfileHandler } from '../devfile/devfile-handler';
 import { FeaturedFetcher } from '../fetch/featured-fetcher';
 import { FeaturedPluginLogic } from '../logic/featured-plugin-logic';
 import { FindFileExtensions } from '../find/find-file-extensions';
-import { RecommandationPluginAnalysis } from './recommandation-plugin-analysis';
+import { RecommendationPluginAnalysis } from './recommendation-plugin-analysis';
 import { VSCodeCurrentPlugins } from '../analyzer/vscode-current-plugins';
 import { WorkspaceHandler } from '../workspace/workspace-handler';
 
 /**
- * Plug-in that is suggesting or adding by default recommandations
+ * Plug-in that is suggesting or adding by default recommendations
  * usecases:
  *  - empty workspaces:
  *     - after initial clone on empty workspaces
@@ -30,7 +30,7 @@ import { WorkspaceHandler } from '../workspace/workspace-handler';
  *  - when opening new files
  */
 @injectable()
-export class RecommandationPlugin {
+export class RecommendationPlugin {
   @inject(FindFileExtensions)
   private findFileExtensions: FindFileExtensions;
 
@@ -49,17 +49,17 @@ export class RecommandationPlugin {
   @inject(FeaturedPluginLogic)
   private featuredPluginLogic: FeaturedPluginLogic;
 
-  private deferredSetupPromise: Promise<RecommandationPluginAnalysis>;
+  private deferredSetupPromise: Promise<RecommendationPluginAnalysis>;
 
   async start(): Promise<void> {
-    // Bring featured recommandations after projects are cloned
+    // Bring featured recommendations after projects are cloned
     const workspacePlugin = theia.plugins.getPlugin('Eclipse Che.@eclipse-che/workspace-plugin');
     if (workspacePlugin && workspacePlugin.exports && workspacePlugin.exports.onDidCloneSources) {
       workspacePlugin.exports.onDidCloneSources(() => this.afterClone());
     }
 
     // Perform tasks in parallel
-    const deferredSetup = new Deferred<RecommandationPluginAnalysis>();
+    const deferredSetup = new Deferred<RecommendationPluginAnalysis>();
     this.deferredSetupPromise = deferredSetup.promise;
 
     // fetch all featured plug-ins from plug-in registry.

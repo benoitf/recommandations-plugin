@@ -17,16 +17,11 @@ import { DevfileHandler } from '../../src/devfile/devfile-handler';
 import { FeaturedFetcher } from '../../src/fetch/featured-fetcher';
 import { FeaturedPluginLogic } from '../../src/logic/featured-plugin-logic';
 import { FindFileExtensions } from '../../src/find/find-file-extensions';
-import { RecommandationPlugin } from '../../src/plugin/recommandation-plugin';
+import { RecommendationPlugin } from '../../src/plugin/recommendation-plugin';
 import { VSCodeCurrentPlugins } from '../../src/analyzer/vscode-current-plugins';
 import { WorkspaceHandler } from '../../src/workspace/workspace-handler';
 
-describe('Test RecommandedPlugin', () => {
-  process.on('unhandledRejection', (error: any) => {
-    console.log('=== UNHANDLED REJECTION ===');
-    console.dir(error.stack);
-  });
-
+describe('Test recommendation Plugin', () => {
   let container: Container;
 
   const findFileExtensions = {
@@ -73,25 +68,25 @@ describe('Test RecommandedPlugin', () => {
     container.bind(VSCodeCurrentPlugins).toConstantValue(vsCodeCurrentPlugins);
     container.bind(FeaturedFetcher).toConstantValue(featuredFetcher);
     container.bind(FindFileExtensions).toConstantValue(findFileExtensions);
-    container.bind(RecommandationPlugin).toSelf().inSingletonScope();
+    container.bind(RecommendationPlugin).toSelf().inSingletonScope();
     getFeaturedPluginsMock.mockReturnValue([]);
   });
 
   test('Check onClone callback is not called if workspacePlugin is not there', async () => {
-    const recommandationPlugin = container.get(RecommandationPlugin);
-    const spyAfterClone = jest.spyOn(recommandationPlugin, 'afterClone');
+    const recommendationPlugin = container.get(RecommendationPlugin);
+    const spyAfterClone = jest.spyOn(recommendationPlugin, 'afterClone');
 
-    await recommandationPlugin.start();
+    await recommendationPlugin.start();
     expect(workspacePluginMock.exports.onDidCloneSources).toBeCalledTimes(0);
     expect(spyAfterClone).toBeCalledTimes(0);
   });
 
   test('Check onClone callback is registered', async () => {
     (theia.plugins.getPlugin as jest.Mock).mockReturnValue(workspacePluginMock);
-    const recommandationPlugin = container.get(RecommandationPlugin);
-    const spyAfterClone = jest.spyOn(recommandationPlugin, 'afterClone');
+    const recommendationPlugin = container.get(RecommendationPlugin);
+    const spyAfterClone = jest.spyOn(recommendationPlugin, 'afterClone');
 
-    await recommandationPlugin.start();
+    await recommendationPlugin.start();
     expect(workspacePluginMock.exports.onDidCloneSources).toBeCalled();
     const onDidCloneSourceCalback = workspacePluginMock.exports.onDidCloneSources.mock.calls[0];
 
@@ -107,14 +102,14 @@ describe('Test RecommandedPlugin', () => {
     // no devfile plugins
     devfileHandlerHasPluginsMock.mockReturnValue(false);
 
-    const recommandationPlugin = container.get(RecommandationPlugin);
-    const spyInstallPlugins = jest.spyOn(recommandationPlugin, 'installPlugins');
+    const recommendationPlugin = container.get(RecommendationPlugin);
+    const spyInstallPlugins = jest.spyOn(recommendationPlugin, 'installPlugins');
     expect(spyInstallPlugins).toBeCalledTimes(0);
 
     getFeaturedPluginsMock.mockReset();
     getFeaturedPluginsMock.mockResolvedValue(['redhat/java']);
 
-    await recommandationPlugin.start();
+    await recommendationPlugin.start();
     // call the callback
     await workspacePluginMock.exports.onDidCloneSources.mock.calls[0][0]();
     expect(spyInstallPlugins).toBeCalled();
@@ -133,13 +128,13 @@ describe('Test RecommandedPlugin', () => {
     // no devfile plugins
     devfileHandlerHasPluginsMock.mockReturnValue(false);
 
-    const recommandationPlugin = container.get(RecommandationPlugin);
+    const recommendationPlugin = container.get(RecommendationPlugin);
     getFeaturedPluginsMock.mockReset();
     getFeaturedPluginsMock.mockResolvedValue(['redhat/java']);
 
     addPluginsMock.mockRejectedValue('Unable to install plug-ins');
 
-    await recommandationPlugin.start();
+    await recommendationPlugin.start();
     // call the callback
     await workspacePluginMock.exports.onDidCloneSources.mock.calls[0][0]();
 
@@ -155,13 +150,13 @@ describe('Test RecommandedPlugin', () => {
     // no devfile plugins
     devfileHandlerHasPluginsMock.mockReturnValue(true);
 
-    const recommandationPlugin = container.get(RecommandationPlugin);
-    const spyInstallPlugins = jest.spyOn(recommandationPlugin, 'installPlugins');
+    const recommendationPlugin = container.get(RecommendationPlugin);
+    const spyInstallPlugins = jest.spyOn(recommendationPlugin, 'installPlugins');
     expect(spyInstallPlugins).toBeCalledTimes(0);
 
-    await recommandationPlugin.start();
+    await recommendationPlugin.start();
 
-    // user click on yes, I want to install recommandations
+    // user click on yes, I want to install recommendations
     const showInformationMessageMock = theia.window.showInformationMessage as jest.Mock;
     showInformationMessageMock.mockResolvedValue({ title: 'Yes' });
 
@@ -182,13 +177,13 @@ describe('Test RecommandedPlugin', () => {
     // no devfile plugins
     devfileHandlerHasPluginsMock.mockReturnValue(true);
 
-    const recommandationPlugin = container.get(RecommandationPlugin);
-    const spyInstallPlugins = jest.spyOn(recommandationPlugin, 'installPlugins');
+    const recommendationPlugin = container.get(RecommendationPlugin);
+    const spyInstallPlugins = jest.spyOn(recommendationPlugin, 'installPlugins');
     expect(spyInstallPlugins).toBeCalledTimes(0);
 
-    await recommandationPlugin.start();
+    await recommendationPlugin.start();
 
-    // user click on yes, I want to install recommandations
+    // user click on yes, I want to install recommendations
     const showInformationMessageMock = theia.window.showInformationMessage as jest.Mock;
     showInformationMessageMock.mockResolvedValue({ title: 'No' });
 
@@ -205,11 +200,11 @@ describe('Test RecommandedPlugin', () => {
   });
 
   test('Check stop', async () => {
-    const recommandationPlugin = container.get(RecommandationPlugin);
-    const spyInstallPlugins = jest.spyOn(recommandationPlugin, 'stop');
+    const recommendationPlugin = container.get(RecommendationPlugin);
+    const spyInstallPlugins = jest.spyOn(recommendationPlugin, 'stop');
     expect(spyInstallPlugins).toBeCalledTimes(0);
 
-    recommandationPlugin.stop();
+    recommendationPlugin.stop();
     expect(spyInstallPlugins).toBeCalled();
   });
 });

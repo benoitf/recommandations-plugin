@@ -10,19 +10,19 @@
 import 'reflect-metadata';
 
 import { InversifyBinding } from './inject/inversify-bindings';
-import { RecommandationPlugin } from './plugin/recommandation-plugin';
+import { RecommendationPlugin } from './plugin/recommendation-plugin';
 
-let recommandationPlugin: RecommandationPlugin;
+let recommendationPlugin: RecommendationPlugin;
 
 export function start(): void {
   const inversifyBinding = new InversifyBinding();
   const container = inversifyBinding.initBindings();
-  recommandationPlugin = container.get(RecommandationPlugin);
-  recommandationPlugin.start();
+  recommendationPlugin = container.get(RecommendationPlugin);
+  recommendationPlugin.start();
 }
 
 export function stop(): void {
-  if (recommandationPlugin) {
-    recommandationPlugin.stop();
+  if (recommendationPlugin) {
+    recommendationPlugin.stop();
   }
 }

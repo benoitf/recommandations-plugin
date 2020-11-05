@@ -9,7 +9,7 @@
 import { Featured } from '../fetch/featured';
 import { VSCodeCurrentPluginsLanguages } from '../analyzer/vscode-current-plugins-languages';
 
-export interface RecommandationPluginAnalysis {
+export interface RecommendationPluginAnalysis {
   featuredList: Featured[];
   vsCodeCurrentPluginsLanguages: VSCodeCurrentPluginsLanguages;
   devfileHasPlugins: boolean;
