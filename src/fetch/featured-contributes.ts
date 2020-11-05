@@ -6,12 +6,8 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  ***********************************************************************/
-export class Deferred<T> {
-  resolve: (value?: T) => void;
-  reject: (err?: unknown) => void;
+import { FeaturedContributeLanguage } from './featured-contribute-language';
 
-  promise = new Promise<T>((resolve, reject) => {
-    this.resolve = resolve;
-    this.reject = reject;
-  });
+export interface FeaturedContributes {
+  languages: FeaturedContributeLanguage[];
 }

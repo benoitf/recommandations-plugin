@@ -6,12 +6,15 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  ***********************************************************************/
-export class Deferred<T> {
-  resolve: (value?: T) => void;
-  reject: (err?: unknown) => void;
 
-  promise = new Promise<T>((resolve, reject) => {
-    this.resolve = resolve;
-    this.reject = reject;
+import { Deferred } from '../../src/util/deferred';
+
+describe('Test Deferred', () => {
+  test('deferred', async () => {
+    const deferredBoolean = new Deferred<boolean>();
+    setTimeout(() => deferredBoolean.resolve(true), 500);
+    const promise = deferredBoolean.promise;
+    const result = await promise;
+    expect(result).toBeTruthy();
   });
-}
+});

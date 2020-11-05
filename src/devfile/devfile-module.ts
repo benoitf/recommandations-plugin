@@ -6,12 +6,12 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  ***********************************************************************/
-export class Deferred<T> {
-  resolve: (value?: T) => void;
-  reject: (err?: unknown) => void;
+import { ContainerModule, interfaces } from 'inversify';
 
-  promise = new Promise<T>((resolve, reject) => {
-    this.resolve = resolve;
-    this.reject = reject;
-  });
-}
+import { DevfileHandler } from './devfile-handler';
+
+const devfileModule = new ContainerModule((bind: interfaces.Bind) => {
+  bind(DevfileHandler).toSelf().inSingletonScope();
+});
+
+export { devfileModule };

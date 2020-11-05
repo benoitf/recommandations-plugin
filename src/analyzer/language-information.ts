@@ -6,12 +6,9 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  ***********************************************************************/
-export class Deferred<T> {
-  resolve: (value?: T) => void;
-  reject: (err?: unknown) => void;
-
-  promise = new Promise<T>((resolve, reject) => {
-    this.resolve = resolve;
-    this.reject = reject;
-  });
+export interface LanguageInformation {
+  id: string;
+  fileExtensions: string[];
+  extensions: string[];
+  workspaceContains: string[];
 }

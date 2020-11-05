@@ -6,12 +6,12 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  ***********************************************************************/
-export class Deferred<T> {
-  resolve: (value?: T) => void;
-  reject: (err?: unknown) => void;
+import { Featured } from '../fetch/featured';
+import { VSCodeCurrentPluginsLanguages } from '../analyzer/vscode-current-plugins-languages';
 
-  promise = new Promise<T>((resolve, reject) => {
-    this.resolve = resolve;
-    this.reject = reject;
-  });
+export interface FeaturePluginLogicRequest {
+  featuredList: Featured[];
+  vsCodeCurrentPluginsLanguages: VSCodeCurrentPluginsLanguages;
+  devfileHasPlugins: boolean;
+  extensionsInCheWorkspace: string[];
 }

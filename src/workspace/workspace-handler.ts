@@ -6,12 +6,20 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  ***********************************************************************/
-export class Deferred<T> {
-  resolve: (value?: T) => void;
-  reject: (err?: unknown) => void;
+import * as che from '@eclipse-che/plugin';
 
-  promise = new Promise<T>((resolve, reject) => {
-    this.resolve = resolve;
-    this.reject = reject;
-  });
+import { injectable } from 'inversify';
+
+/**
+ * Allow to restart a workspace.
+ */
+@injectable()
+export class WorkspaceHandler {
+  async restart(promptMessage: string): Promise<boolean> {
+    const options: che.RestartWorkspaceOptions = {
+      prompt: true,
+      promptMessage,
+    };
+    return che.workspace.restartWorkspace(options);
+  }
 }

@@ -6,12 +6,13 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  ***********************************************************************/
-export class Deferred<T> {
-  resolve: (value?: T) => void;
-  reject: (err?: unknown) => void;
 
-  promise = new Promise<T>((resolve, reject) => {
-    this.resolve = resolve;
-    this.reject = reject;
-  });
-}
+import { ContainerModule, interfaces } from 'inversify';
+
+import { WorkspaceHandler } from './workspace-handler';
+
+const workspaceModule = new ContainerModule((bind: interfaces.Bind) => {
+  bind(WorkspaceHandler).toSelf().inSingletonScope();
+});
+
+export { workspaceModule };

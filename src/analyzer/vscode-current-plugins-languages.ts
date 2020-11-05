@@ -6,12 +6,10 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  ***********************************************************************/
-export class Deferred<T> {
-  resolve: (value?: T) => void;
-  reject: (err?: unknown) => void;
+export interface VSCodeCurrentPluginsLanguages {
+  // Map between file extension and language ID
+  languagesPerFileExtensions: Map<string, string[]>;
 
-  promise = new Promise<T>((resolve, reject) => {
-    this.resolve = resolve;
-    this.reject = reject;
-  });
+  // Map between a language ID and the plugin's IDs
+  pluginsPerLanguageID: Map<string, string[]>;
 }

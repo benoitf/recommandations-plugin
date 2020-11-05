@@ -1,21 +1,45 @@
 {
   "name": "recommandations-plugin",
-  "publisher": "theia",
+  "publisher": "Eclipse-Che",
   "keywords": [
     "theia-plugin"
   ],
   "version": "0.0.1",
-  "license": "none",
+  "license": "EPL-2.0",
   "files": [
     "src"
   ],
+  "dependencies": {
+    "@eclipse-che/plugin": "^0.0.1-1604326289",
+    "axios": "^0.21.0",
+    "globby": "^11.0.1",
+    "inversify": "^5.0.1",
+    "reflect-metadata": "^0.1.13",
+    "why-is-node-running": "^2.2.0"
+  },
   "devDependencies": {
+    "@prettier/plugin-xml": "^0.12.0",
     "@theia/plugin": "next",
     "@theia/plugin-packager": "latest",
-    "@types/node": "^12",
-    "rimraf": "2.6.2",
-    "typescript": "4",
-    "typescript-formatter": "7.2.2"
+    "@types/fs-extra": "^9.0.3",
+    "@types/jest": "^26",
+    "@types/node": "^14",
+    "@types/reflect-metadata": "^0.1.0",
+    "@typescript-eslint/eslint-plugin": "^4.6.1",
+    "@typescript-eslint/parser": "^4.6.1",
+    "eslint": "^7.12.1",
+    "eslint-config-prettier": "^6.15.0",
+    "eslint-plugin-header": "^3.1.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jest": "^24.1.0",
+    "eslint-plugin-no-null": "^1.0.2",
+    "import-sort-style-eslint": "^6.0.0",
+    "jest": "26.6.2",
+    "prettier": "^2.1.2",
+    "prettier-plugin-import-sort": "^0.0.6",
+    "rimraf": "3.0.2",
+    "ts-jest": "26.4.3",
+    "typescript": "4"
   },
   "activationEvents": [
     "*"
@@ -23,10 +47,14 @@
   "scripts": {
     "prepare": "yarn run clean && yarn run build",
     "clean": "rimraf lib",
-    "format-code": "tsfmt -r",
     "watch": "tsc -watch",
     "compile": "tsc",
-    "build": "yarn run format-code && yarn run compile && theia-plugin pack"
+    "format": "prettier --write .eslintrc.js **/*.ts **/**/*.ts package.json",
+    "format-check": "prettier --check .eslintrc.js **/*.ts **/**/*.ts package.json",
+    "lint": "eslint . --ext .ts",
+    "build": "yarn run format-check && yarn run compile && yarn run lint && yarn run test && theia-plugin pack",
+    "test": "jest --forceExit",
+    "test-watch": "jest --watchAll"
   },
   "engines": {
     "theiaPlugin": "next"
@@ -34,11 +62,44 @@
   "theiaPlugin": {
     "backend": "lib/plugin.js"
   },
-  "dependencies": {
-    "@eclipse-che/plugin": "^0.0.1-1604326289",
-    "axios": "^0.21.0",
-    "globby": "^11.0.1",
-    "inversify": "^5.0.1",
-    "reflect-metadata": "^0.1.13"
+  "jest": {
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "src/**/*.ts"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 100,
+        "functions": 100,
+        "lines": 100,
+        "statements": 100
+      }
+    },
+    "coverageDirectory": "./coverage",
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "modulePathIgnorePatterns": [
+      "<rootDir>/lib"
+    ],
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json"
+    ]
+  },
+  "prettier": {
+    "printWidth": 120,
+    "singleQuote": true,
+    "arrowParens": "avoid"
+  },
+  "importSort": {
+    ".ts": {
+      "style": "eslint",
+      "parser": "typescript"
+    }
   }
 }

@@ -1,26 +1,34 @@
+/**********************************************************************
+ * Copyright (c) 2020 Red Hat, Inc.
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ ***********************************************************************/
 import { Container } from 'inversify';
-import 'reflect-metadata';
-import { apisModule } from '../api/api-module';
+import { analyzerModule } from '../analyzer/analyzer-module';
+import { devfileModule } from '../devfile/devfile-module';
+import { featuredModule } from '../logic/featured-module';
 import { fetchModule } from '../fetch/fetch-module';
 import { findModule } from '../find/find-module';
-import { initModule } from '../init/init-module';
-import { analyzerModule } from '../analyzer/analyzer-module';
-
+import { pluginModule } from '../plugin/plugin-module';
+import { workspaceModule } from '../workspace/workspace-module';
 
 export class InversifyBinding {
-    private container: Container;
+  private container: Container;
 
-    constructor() { }
+  public initBindings(): Container {
+    this.container = new Container();
 
-    public initBindings(): Container {
-        this.container = new Container();
+    this.container.load(analyzerModule);
+    this.container.load(devfileModule);
+    this.container.load(featuredModule);
+    this.container.load(fetchModule);
+    this.container.load(findModule);
+    this.container.load(pluginModule);
+    this.container.load(workspaceModule);
 
-        this.container.load(analyzerModule);
-        this.container.load(apisModule);
-        this.container.load(fetchModule);
-        this.container.load(findModule);
-        this.container.load(initModule);
-
-        return this.container;
-    }
+    return this.container;
+  }
 }

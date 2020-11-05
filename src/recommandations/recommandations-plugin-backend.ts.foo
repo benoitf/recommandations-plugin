@@ -1,10 +1,19 @@
+
+/**********************************************************************
+* Copyright (c) 2020 Red Hat, Inc.
+* This program and the accompanying materials are made
+* available under the terms of the Eclipse Public License 2.0
+* which is available at https://www.eclipse.org/legal/epl-2.0/
+*
+* SPDX-License-Identifier: EPL-2.0
+***********************************************************************/
+
+
 /*
 import * as theia from '@theia/plugin';
 import AxiosInstance from 'axios';
 
 export function start(context: theia.PluginContext) {
-
-
 
     const workspacePlugin = theia.plugins.getPlugin('Eclipse Che.@eclipse-che/workspace-plugin');
             if (workspacePlugin) {
@@ -47,8 +56,6 @@ export function start(context: theia.PluginContext) {
 
     const languagesPerRemoteAvailablePlugins = new Map<string, any[]>();
 
-
-
     const listener1 = async (textDocument: theia.TextDocument) => {
          if (workspacePaths.some(workspacePath => textDocument.fileName.startsWith(workspacePath))) {
             theia.window.showInformationMessage(`${textDocument.fileName} startsWith`);
@@ -85,7 +92,6 @@ export function start(context: theia.PluginContext) {
 
                     })
 
-
                 }
 
                 theia.window.showInformationMessage('Picking up listener1 ' + textDocument.fileName + ' is using language ' + textDocument.languageId);
@@ -103,5 +109,4 @@ export function start(context: theia.PluginContext) {
 
 export function stop() {
 
-}
-*/
+}*/
