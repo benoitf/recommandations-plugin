@@ -1,5 +1,6 @@
 /**********************************************************************
  * Copyright (c) 2020 Red Hat, Inc.
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -15,6 +16,7 @@ import { DevfileHandler } from '../devfile/devfile-handler';
 import { FeaturedFetcher } from '../fetch/featured-fetcher';
 import { FeaturedPluginLogic } from '../logic/featured-plugin-logic';
 import { FindFileExtensions } from '../find/find-file-extensions';
+import { RecommendPluginOpenFileLogic } from '../logic/recommend-plugin-open-file-logic';
 import { RecommendationPluginAnalysis } from './recommendation-plugin-analysis';
 import { VSCodeCurrentPlugins } from '../analyzer/vscode-current-plugins';
 import { WorkspaceHandler } from '../workspace/workspace-handler';
@@ -49,6 +51,9 @@ export class RecommendationPlugin {
   @inject(FeaturedPluginLogic)
   private featuredPluginLogic: FeaturedPluginLogic;
 
+  @inject(RecommendPluginOpenFileLogic)
+  private recommendPluginOpenFileLogic: RecommendPluginOpenFileLogic;
+
   private deferredSetupPromise: Promise<RecommendationPluginAnalysis>;
 
   async start(): Promise<void> {
@@ -61,6 +66,9 @@ export class RecommendationPlugin {
     // Perform tasks in parallel
     const deferredSetup = new Deferred<RecommendationPluginAnalysis>();
     this.deferredSetupPromise = deferredSetup.promise;
+
+    // enable the recommendation on file being opened if no plug-in is matching this file extension
+    this.enableRecommendationPluginWhenOpeningFiles();
 
     // fetch all featured plug-ins from plug-in registry.
     const featuredListPromise = this.featuredFecher.fetch();
@@ -127,6 +135,14 @@ export class RecommendationPlugin {
     } catch (error) {
       theia.window.showInformationMessage('Unable to add featured plugins' + error);
     }
+  }
+
+  // display recommendation when opening files
+  async enableRecommendationPluginWhenOpeningFiles(): Promise<void> {
+    const workspaceAnalysis = await this.deferredSetupPromise;
+    theia.workspace.onDidOpenTextDocument(document =>
+      this.recommendPluginOpenFileLogic.onOpenFile(document, workspaceAnalysis)
+    );
   }
 
   async stop(): Promise<void> {

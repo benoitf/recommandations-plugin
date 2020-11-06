@@ -1,5 +1,6 @@
 /**********************************************************************
  * Copyright (c) 2020 Red Hat, Inc.
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -17,6 +18,7 @@ import { DevfileHandler } from '../../src/devfile/devfile-handler';
 import { FeaturedFetcher } from '../../src/fetch/featured-fetcher';
 import { FeaturedPluginLogic } from '../../src/logic/featured-plugin-logic';
 import { FindFileExtensions } from '../../src/find/find-file-extensions';
+import { RecommendPluginOpenFileLogic } from '../../src/logic/recommend-plugin-open-file-logic';
 import { RecommendationPlugin } from '../../src/plugin/recommendation-plugin';
 import { VSCodeCurrentPlugins } from '../../src/analyzer/vscode-current-plugins';
 import { WorkspaceHandler } from '../../src/workspace/workspace-handler';
@@ -53,6 +55,11 @@ describe('Test recommendation Plugin', () => {
     getFeaturedPlugins: getFeaturedPluginsMock,
   } as any;
 
+  const onOpenFileRecommendPluginOpenFileLogicMock = jest.fn();
+  const recommendPluginOpenFileLogic = {
+    onOpenFile: onOpenFileRecommendPluginOpenFileLogicMock,
+  } as any;
+
   const workspacePluginMock = {
     exports: {
       onDidCloneSources: jest.fn(),
@@ -63,6 +70,7 @@ describe('Test recommendation Plugin', () => {
     container = new Container();
     jest.resetAllMocks();
     container.bind(FeaturedPluginLogic).toConstantValue(featuredPluginLogic);
+    container.bind(RecommendPluginOpenFileLogic).toConstantValue(recommendPluginOpenFileLogic);
     container.bind(WorkspaceHandler).toConstantValue(workspaceHandler);
     container.bind(DevfileHandler).toConstantValue(devfileHandler);
     container.bind(VSCodeCurrentPlugins).toConstantValue(vsCodeCurrentPlugins);
@@ -206,5 +214,21 @@ describe('Test recommendation Plugin', () => {
 
     recommendationPlugin.stop();
     expect(spyInstallPlugins).toBeCalled();
+  });
+
+  test('Check recommendation when opening files', async () => {
+    // no devfile plugins
+    devfileHandlerHasPluginsMock.mockReturnValue(false);
+
+    const recommendationPlugin = container.get(RecommendationPlugin);
+
+    await recommendationPlugin.start();
+    const onDidOpenTextDocumentMethodCalback = (theia.workspace.onDidOpenTextDocument as jest.Mock).mock.calls[0];
+
+    // call the callback
+    await onDidOpenTextDocumentMethodCalback[0]();
+
+    // check onOpenFile is being called
+    expect(onOpenFileRecommendPluginOpenFileLogicMock).toBeCalled();
   });
 });

@@ -1,5 +1,6 @@
 /**********************************************************************
  * Copyright (c) 2020 Red Hat, Inc.
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -15,6 +16,8 @@ import { FeaturedFetcher } from '../../src/fetch/featured-fetcher';
 import { FeaturedPluginLogic } from '../../src/logic/featured-plugin-logic';
 import { FindFileExtensions } from '../../src/find/find-file-extensions';
 import { InversifyBinding } from '../../src/inject/inversify-bindings';
+import { PluginsPerLanguageFetcher } from '../../src/fetch/plugins-per-language-fetcher';
+import { RecommendPluginOpenFileLogic } from '../../src/logic/recommend-plugin-open-file-logic';
 import { RecommendationPlugin } from '../../src/plugin/recommendation-plugin';
 import { VSCodeCurrentPlugins } from '../../src/analyzer/vscode-current-plugins';
 import { WorkspaceHandler } from '../../src/workspace/workspace-handler';
@@ -27,31 +30,26 @@ describe('Test InversifyBinding', () => {
     expect(inversifyBinding).toBeDefined();
 
     // check analyzer
-    const vsCodeCurrentPlugins = container.get(VSCodeCurrentPlugins);
-    expect(vsCodeCurrentPlugins).toBeDefined();
+    expect(container.get(VSCodeCurrentPlugins)).toBeDefined();
 
     // check devfile
-    const devfileHandler = container.get(DevfileHandler);
-    expect(devfileHandler).toBeDefined();
+    expect(container.get(DevfileHandler)).toBeDefined();
 
     // check fetch
-    const featuredFetcher = container.get(FeaturedFetcher);
-    expect(featuredFetcher).toBeDefined();
+    expect(container.get(FeaturedFetcher)).toBeDefined();
+    expect(container.get(PluginsPerLanguageFetcher)).toBeDefined();
 
     // check find
-    const findFileExtensions = container.get(FindFileExtensions);
-    expect(findFileExtensions).toBeDefined();
+    expect(container.get(FindFileExtensions)).toBeDefined();
 
     // check logic
-    const featuredPluginLogic = container.get(FeaturedPluginLogic);
-    expect(featuredPluginLogic).toBeDefined();
+    expect(container.get(FeaturedPluginLogic)).toBeDefined();
+    expect(container.get(RecommendPluginOpenFileLogic)).toBeDefined();
 
     // check plugin
-    const recommendationPlugin = container.get(RecommendationPlugin);
-    expect(recommendationPlugin).toBeDefined();
+    expect(container.get(RecommendationPlugin)).toBeDefined();
 
     // check workspace
-    const workspaceHandler = container.get(WorkspaceHandler);
-    expect(workspaceHandler).toBeDefined();
+    expect(container.get(WorkspaceHandler)).toBeDefined();
   });
 });
